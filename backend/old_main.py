@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
+import bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
-import pyotp
-import qrcode
 from io import BytesIO
 import base64
 
@@ -15,7 +13,6 @@ app.config['JWT_SECRET_KEY'] = 'your-secret-key'  # Use environment variable in 
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 3600  # 1 hour
 
 db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 class User(db.Model):
@@ -41,18 +38,14 @@ def register():
 		return jsonify({"message": "Email already registered"}), 400
 	
 	# Hash password
-	hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
-	
-	# Generate TOTP secret for 2FA
-	totp_secret = pyotp.random_base32()
-	
+	hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+		
 	# Create new user
 	new_user = User(
 		email=data['email'],
 		password=hashed_password,
 		full_name=data['fullName'],
 		role=data['role'],
-		totp_secret=totp_secret
 	)
 	
 	# Add professional details if applicable
@@ -75,22 +68,10 @@ def setup_2fa(user_id):
 	if not user:
 		return jsonify({"message": "User not found"}), 404
 	
-	totp = pyotp.TOTP(user.totp_secret)
-	provisioning_url = totp.provisioning_uri(name=user.email, issuer_name="Mental Health Platform")
-	
-	# Generate QR code
-	qr = qrcode.QRCode(version=1, box_size=10, border=5)
-	qr.add_data(provisioning_url)
-	qr.make(fit=True)
-	img = qr.make_image(fill='black', back_color='white')
-	
-	buffered = BytesIO()
-	img.save(buffered)
-	img_str = base64.b64encode(buffered.getvalue()).decode()
+	totp = 12345
 	
 	return jsonify({
-		"qr_code": img_str,
-		"secret": user.totp_secret
+		"secret": "abcd"
 	})
 
 @app.route('/api/verify-2fa', methods=['POST'])
@@ -101,7 +82,7 @@ def verify_2fa():
 	if not user:
 		return jsonify({"message": "User not found"}), 404
 	
-	totp = pyotp.TOTP(user.totp_secret)
+	totp = 12345
 	if totp.verify(data['code']):
 		user.is_verified = True
 		db.session.commit()
@@ -111,18 +92,28 @@ def verify_2fa():
 
 @app.route('/api/login', methods=['POST'])
 def login():
+	return jsonify({
+			"access_token": "access_token",
+			"user": {
+				"id": "1234",
+				"email": "abc@xyz",
+				"fullName": "AB CD",
+				"role": "patient",
+			}
+		})
+	"""
 	data = request.get_json()
 	user = User.query.filter_by(email=data['email']).first()
 	
-	if not user or not bcrypt.check_password_hash(user.password, data['password']):
-		return jsonify({"message": "Invalid email or password"}), 401
+	if not user or not bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')):
+        return jsonify({"message": "Invalid email or password"}), 401
 	
 	# First authentication step successful, now require 2FA
 	return jsonify({
 		"message": "Please enter 2FA code",
 		"user_id": user.id,
 		"requires_2fa": True
-	})
+	})"""
 
 @app.route('/api/login/2fa', methods=['POST'])
 def login_2fa():
@@ -132,7 +123,7 @@ def login_2fa():
 	if not user:
 		return jsonify({"message": "User not found"}), 404
 	
-	totp = pyotp.TOTP(user.totp_secret)
+	totp = 12345
 	if totp.verify(data['code']):
 		# Create access token
 		access_token = create_access_token(identity=user.id)
@@ -150,8 +141,17 @@ def login_2fa():
 		return jsonify({"message": "Invalid 2FA code"}), 401
 
 @app.route('/api/user/profile', methods=['GET'])
-@jwt_required()
 def get_profile():
+	return jsonify({
+		"access_token": "access_token",
+		"user": {
+			"id": "1234",
+			"email": "abc@xyz",
+			"fullName": "AB CD",
+			"role": "patient",
+		}
+	})
+	"""
 	user_id = get_jwt_identity()
 	user = User.query.get(user_id)
 	
@@ -165,7 +165,7 @@ def get_profile():
 		"role": user.role,
 		"is_verified": user.is_verified,
 		"is_credential_verified": user.is_credential_verified if user.role == 'professional' else None
-	})
+	})"""
 
 if __name__ == '__main__':
 	with app.app_context():
