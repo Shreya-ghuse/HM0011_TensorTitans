@@ -1,4 +1,4 @@
-# Mental Health Support Platform Backend
+# MindfulConnect Backend
 
 This is the backend of the **Mental Health Support Platform**, built using **Flask**. It provides authentication, user management, and two-factor authentication (2FA) for security.
 
