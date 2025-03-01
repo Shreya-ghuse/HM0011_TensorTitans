@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUserProfile = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/user/profile');
-      setCurrentUser(res.data);
+      setCurrentUser(res.data.user);
     } catch (error) {
       // Token might be expired or invalid
       logout();

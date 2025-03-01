@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FiUser, FiMail, FiLock, FiShield, FiCheckCircle } from 'react-icons/fi';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -54,95 +55,125 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Create Account</h2>
-      {error && <div className="error-message">{error}</div>}
-      
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <label>Full Name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={onChange}
-            required
-          />
-        </div>
+    <div className="min-h-[40rem] flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2 mb-6">
+          <FiCheckCircle className="text-green-500" /> Create Account
+        </h2>
         
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={onChange}
-            required
-          />
-        </div>
+        {error && <div className="bg-red-100 text-red-600 px-4 py-2 rounded-md mb-4">{error}</div>}
         
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={onChange}
-            minLength="8"
-            required
-          />
-        </div>
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="relative">
+            <FiUser className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={onChange}
+              placeholder="Full Name"
+              required
+              className="w-full pl-10 py-2 border rounded-md focus:ring focus:ring-blue-300"
+            />
+          </div>
+          
+          <div className="relative">
+            <FiMail className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={onChange}
+              placeholder="Email"
+              required
+              className="w-full pl-10 py-2 border rounded-md focus:ring focus:ring-blue-300"
+            />
+          </div>
+          
+          <div className="relative">
+            <FiLock className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={onChange}
+              placeholder="Password (Min 8 characters)"
+              minLength="8"
+              required
+              className="w-full pl-10 py-2 border rounded-md focus:ring focus:ring-blue-300"
+            />
+          </div>
+          
+          <div className="relative">
+            <FiLock className="absolute left-3 top-3 text-gray-400" />
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={onChange}
+              placeholder="Confirm Password"
+              minLength="8"
+              required
+              className="w-full pl-10 py-2 border rounded-md focus:ring focus:ring-blue-300"
+            />
+          </div>
+          
+          <div className="relative">
+            <label className="block font-medium">I am a:</label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={onChange}
+              className="w-full py-2 px-2 border rounded-md focus:ring focus:ring-blue-300"
+            >
+              <option value="patient">Patient</option>
+              <option value="professional">Mental Health Professional</option>
+            </select>
+          </div>
+          
+          {formData.role === 'professional' && (
+            <>
+              <div className="relative">
+                <FiShield className="absolute left-3 top-3 text-gray-400" />
+                <input
+                  type="text"
+                  name="licenseNumber"
+                  value={formData.licenseNumber}
+                  onChange={onChange}
+                  placeholder="License Number"
+                  required
+                  className="w-full pl-10 py-2 border rounded-md focus:ring focus:ring-blue-300"
+                />
+              </div>
+
+              <div className="relative">
+                <textarea
+                  name="credentials"
+                  value={formData.credentials}
+                  onChange={onChange}
+                  placeholder="Your qualifications and experience"
+                  required
+                  className="w-full py-2 px-2 border rounded-md focus:ring focus:ring-blue-300"
+                />
+              </div>
+            </>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300 disabled:opacity-50"
+          >
+            {loading ? 'Creating Account...' : 'Register'}
+          </button>
+        </form>
         
-        <div className="form-group">
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={onChange}
-            minLength="8"
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label>I am a:</label>
-          <select name="role" value={formData.role} onChange={onChange}>
-            <option value="patient">Patient</option>
-            <option value="professional">Mental Health Professional</option>
-          </select>
-        </div>
-        
-        {formData.role === 'professional' && (
-          <>
-            <div className="form-group">
-              <label>License Number</label>
-              <input
-                type="text"
-                name="licenseNumber"
-                value={formData.licenseNumber}
-                onChange={onChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Professional Credentials</label>
-              <textarea
-                name="credentials"
-                value={formData.credentials}
-                onChange={onChange}
-                placeholder="Your qualifications and experience"
-                required
-              />
-            </div>
-          </>
-        )}
-        
-        <button type="submit" disabled={loading} className="btn-primary">
-          {loading ? 'Creating Account...' : 'Register'}
-        </button>
-      </form>
+        <p className="text-center text-gray-600 mt-4">
+          Already have an account? <a href="/login" className="text-blue-600 hover:underline">Login</a>
+        </p>
+      </div>
     </div>
   );
 };
+
 export default Register;

@@ -51,58 +51,50 @@ const App = () => {
               {/*<Route path="/reset-password/:token" element={<ResetPassword />} />*/}
               
               {/* Protected Routes - Require Authentication */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <PrivateRoute>
-                    <Dashboard />
-                  </PrivateRoute>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                } 
-              />
-              <Route 
-                path="/messages" 
-                element={
-                  <PrivateRoute>
-                    <Messages />
-                  </PrivateRoute>
-                } 
-              />
-              <Route 
-                path="/settings" 
-                element={
-                  <PrivateRoute>
-                    <Settings />
-                  </PrivateRoute>
-                } 
-              />
-              
+              <Route element={<PrivateRoute />}>
+                <Route 
+                    path="/dashboard" 
+                    element={<Dashboard />} 
+                />
+                <Route 
+                    path="/profile" 
+                    element={
+                        <Profile />
+                    }
+                />
+                <Route 
+                    path="/messages" 
+                    element={
+                        <Messages />
+                    } 
+                />
+                <Route 
+                    path="/settings" 
+                    element={
+                        <Settings />
+                    } 
+                />
+              </Route>
+                
               {/* Patient Only Routes */}
-              <Route 
-                path="/appointments" 
-                element={
-                  <PrivateRoute allowedRoles={['patient']}>
-                    <Appointments />
-                  </PrivateRoute>
-                } 
-              />
+              <Route element={<PrivateRoute allowedRoles={['patient']} />}>
+                  <Route 
+                      path="/appointments" 
+                      element={
+                          <Appointments />
+                      } 
+                  />
+              </Route>
               
               {/* Professional Only Routes */}
-              <Route 
-                path="/clients" 
-                element={
-                  <PrivateRoute allowedRoles={['professional']}>
-                    <ClientManagement />
-                  </PrivateRoute>
-                } 
-              />
+              <Route element={<PrivateRoute allowedRoles={['professional']}/>}>
+                  <Route 
+                      path="/clients" 
+                      element={
+                          <ClientManagement />
+                      } 
+                  />
+              </Route>
               
               {/* Catch all for 404 */}
               <Route path="*" element={<NotFound />} />

@@ -9,7 +9,8 @@ import {
   FaVideo,
   FaPhone,
   FaUser,
-  FaCircle
+  FaCircle,
+  FaComments
 } from 'react-icons/fa';
 
 const Messages = () => {

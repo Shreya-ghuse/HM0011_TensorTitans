@@ -45,7 +45,7 @@ const Dashboard = () => {
     };
     
     fetchDashboardData();
-  }, []);
+}, []);
 
   const handleMoodSelection = (selectedMood) => {
     setMood(selectedMood);

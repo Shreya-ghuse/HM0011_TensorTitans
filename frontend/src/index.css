@@ -1,1 +1,4 @@
 @import "tailwindcss";
+.main-content {
+	margin-top: calc(var(--spacing) * 16);
+}

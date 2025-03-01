@@ -34,7 +34,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex items-center justify-center space-x-6">
             <Link to="/" className="text-gray-300 hover:text-white transition">Home</Link>
             <Link to="/resources" className="text-gray-300 hover:text-white transition">Resources</Link>
 
