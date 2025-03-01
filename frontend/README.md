@@ -1,4 +1,4 @@
-# Mental Health Support Platform Frontend
+# MindfulConnect Frontend
 
 
 This is the **frontend** for the **MindfulConnect** platform, a mental health support application. It is built using **React, Vite, and Tailwind CSS**.
