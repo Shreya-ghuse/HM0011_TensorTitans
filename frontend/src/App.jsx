@@ -15,6 +15,9 @@ import ForgotPassword from './components/ForgotPassword';
 //import ResetPassword from './components/ResetPassword';
 import Profile from './components/Profile';
 
+// Chatbot component
+import Chatbot from "./components/Chatbot";
+
 // Protected Route Components
 import PrivateRoute from './routing/PrivateRoute';
 
@@ -66,6 +69,12 @@ const App = () => {
                     path="/messages" 
                     element={
                         <Messages />
+                    } 
+                />
+                <Route 
+                    path="/chatbot" 
+                    element={
+                        <Chatbot />
                     } 
                 />
                 <Route 

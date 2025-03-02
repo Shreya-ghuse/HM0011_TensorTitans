@@ -55,7 +55,10 @@ const Navbar = () => {
                 )}
 
                 {currentUser.role === 'patient' && (
-                  <Link to="/appointments" className="text-gray-300 hover:text-white transition">My Sessions</Link>
+                  <>
+                    <Link to="/appointments" className="text-gray-300 hover:text-white transition">My Sessions</Link>
+                    <Link to="/chatbot" className="text-gray-300 hover:text-white transition">AI Chatbot</Link>
+                  </>
                 )}
 
                 <Link to="/messages" className="text-gray-300 hover:text-white transition">Messages</Link>

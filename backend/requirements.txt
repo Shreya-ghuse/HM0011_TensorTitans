@@ -1,11 +1,11 @@
 Flask==3.0.0
 Flask-Cors==4.0.0
-Flask-SQLAlchemy==3.1.1
+peewee
 Flask-JWT-Extended==4.5.3
 Flask-RESTful==0.3.10
 bcrypt==4.0.1
 gunicorn==21.2.0
-sqlite3==3.41.2  # SQLite database support
 python-dotenv==1.0.1
 requests==2.31.0
 werkzeug==3.0.1
+google-generativeai
