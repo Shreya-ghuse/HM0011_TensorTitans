@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async () => {
     try {
-      const res = await axios.get(`${hostname}api/user/profile`);
+      const res = await axios.get(`${hostname}/api/user/profile`);
       setCurrentUser(res.data.user);
     } catch (error) {
       // Token might be expired or invalid
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post(`${hostname}api/login`, { email, password });
+      const res = await axios.post(`${hostname}/api/login`, { email, password });
       
       localStorage.setItem('token', res.data.access_token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const res = await axios.post(`${hostname}api/register`, userData);
+      const res = await axios.post(`${hostname}/api/register`, userData);
       return res.data;
     } catch (error) {
       setError(error.response?.data?.message || 'Registration failed');
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (userData) => {
     try {
-      const res = await axios.put(`${hostname}api/user/profile`, userData);
+      const res = await axios.put(`${hostname}/api/user/profile`, userData);
       setCurrentUser(res.data);
       return res.data;
     } catch (error) {
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
   
   const resetPassword = async (email) => {
     try {
-      const res = await axios.post(`${hostname}api/reset-password`, { email });
+      const res = await axios.post(`${hostname}/api/reset-password`, { email });
       return res.data;
     } catch (error) {
       setError(error.response?.data?.message || 'Password reset failed');
