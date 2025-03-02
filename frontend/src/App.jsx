@@ -35,10 +35,15 @@ import NotFound from './pages/NotFound';
 // CSS
 //import './App.css';
 
+let basePath = import.meta.env.VITE_BASE_PATH || "/";
+if (basePath.length > 1 && basePath.endsWith("/")) {
+  basePath = basePath.slice(0, -1);
+}
+
 const App = () => {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename={basePath}>
         <div className="app-container">
           <Navbar />
           <Alert />
