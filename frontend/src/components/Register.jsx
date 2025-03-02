@@ -17,9 +17,6 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const hostname = window.APP_CONFIG?.API_BASE_URL || "http://127.0.0.1:5000";
-  console.log("API Base URL:", hostname);
-
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -48,7 +45,7 @@ const Register = () => {
         submitData.credentials = formData.credentials;
       }
       
-      await axios.post(`${hostname}/api/register`, submitData);
+      await axios.post(`/api/register`, submitData);
       navigate('/login', { state: { message: 'Registration successful!' }});
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');

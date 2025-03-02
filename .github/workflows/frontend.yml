@@ -31,7 +31,7 @@ jobs:
         working-directory: frontend
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           path: frontend/dist  # Adjust if your build output folder is different
 
