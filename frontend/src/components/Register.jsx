@@ -17,6 +17,8 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const hostname = import.meta.env.VITE_API_BASE_URL;
+
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -45,7 +47,7 @@ const Register = () => {
         submitData.credentials = formData.credentials;
       }
       
-      await axios.post(`/api/register`, submitData);
+      await axios.post(`${hostname}/api/register`, submitData);
       navigate('/login', { state: { message: 'Registration successful!' }});
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
