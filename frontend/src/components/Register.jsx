@@ -47,7 +47,7 @@ const Register = () => {
         submitData.credentials = formData.credentials;
       }
       
-      await axios.post(`${hostname}api/register`, submitData);
+      await axios.post(`${hostname}/api/register`, submitData);
       navigate('/login', { state: { message: 'Registration successful!' }});
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
