@@ -10,7 +10,7 @@ const Chatbot = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/chatbot/history");
+        const response = await axios.get(`/api/chatbot/history`);
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching chat history:", error);
@@ -26,7 +26,7 @@ const Chatbot = () => {
     setMessages([...messages, userMessage]);
 
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/chatbot/chat", { message: input });
+      const response = await axios.post(`/api/chatbot/chat`, { message: input });
       const botMessage = { sender: "bot", text: response.data.reply };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
