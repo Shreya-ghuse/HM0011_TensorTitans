@@ -6,11 +6,14 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
+  const hostname = window.APP_CONFIG?.API_BASE_URL || "http://127.0.0.1:5000";
+  console.log("API Base URL:", hostname);
+
   // Fetch chat history on component mount
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/chatbot/history");
+        const response = await axios.get(`${hostname}/api/chatbot/history`);
         setMessages(response.data);
       } catch (error) {
         console.error("Error fetching chat history:", error);
@@ -26,7 +29,7 @@ const Chatbot = () => {
     setMessages([...messages, userMessage]);
 
     try {
-      const response = await axios.post("http://127.0.0.1:5000/api/chatbot/chat", { message: input });
+      const response = await axios.post(`${hostname}/api/chatbot/chat`, { message: input });
       const botMessage = { sender: "bot", text: response.data.reply };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
